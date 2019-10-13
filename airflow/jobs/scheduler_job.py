@@ -1457,7 +1457,7 @@ class SchedulerJob(BaseJob):
             is_unit_test = conf.getboolean('core', 'unit_test_mode')
             loop_end_time = time.time()
             loop_duration = loop_end_time - loop_start_time
-            self.log.debug(
+            self.log.info(
                 "Ran scheduling loop in %.2f seconds",
                 loop_duration)
 
