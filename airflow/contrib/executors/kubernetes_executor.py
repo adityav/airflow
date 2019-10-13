@@ -614,6 +614,26 @@ class AirflowKubernetesScheduler(LoggingMixin):
             return None
 
         with create_session() as session:
+            # attempt to find the task directly, if it cannot, scan all tasks
+            # started on the given execution date
+            task = (
+                session
+                .query(TaskInstance)
+                .filter_by(execution_date=ex_time, task_id=task_id, dag_id=dag_id)
+                .find_one()
+            )
+            if task:
+                self.log.info(
+                    'Found matching task %s-%s (%s) with current state of %s',
+                    task.dag_id, task.task_id, task.execution_date, task.state
+                )
+                return (dag_id, task_id, ex_time, try_num)
+            else:
+                self.log.info(
+                    "Unable to find Task in db directly for %s-%s (%s). Trying to scan all tasks",
+                    dag_id, task_id, ex_time
+                )
+
             tasks = (
                 session
                 .query(TaskInstance)
