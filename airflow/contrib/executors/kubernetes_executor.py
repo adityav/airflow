@@ -620,7 +620,7 @@ class AirflowKubernetesScheduler(LoggingMixin):
                 session
                 .query(TaskInstance)
                 .filter_by(execution_date=ex_time, task_id=task_id, dag_id=dag_id)
-                .find_one()
+                .first()
             )
             if task:
                 self.log.info(
