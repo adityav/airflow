@@ -119,7 +119,7 @@ class LocalTaskJob(BaseJob):
 
                 if time_since_last_heartbeat < self.heartrate:
                     sleep_for = self.heartrate - time_since_last_heartbeat
-                    self.log.warning("Time since last heartbeat(%.2f s) < heartrate(%s s)"
+                    self.log.debug("Time since last heartbeat(%.2f s) < heartrate(%s s)"
                                      ", sleeping for %s s", time_since_last_heartbeat,
                                      self.heartrate, sleep_for)
                     time.sleep(sleep_for)
